@@ -18,11 +18,61 @@ import {FormsModule} from "@angular/forms";
 })
 export class AppComponent {
   title = 'bai11-calculator';
+
+
+
+
+
   firstNumber  = 0;
   secondNumber= 0;
   numBer$ = this.store.select('calculator');
 
-  constructor(private store: Store<{ calculator: CalculatorState }>) {}
+  constructor(private store: Store<{ calculator: CalculatorState }>) {
+    // let calculateParams = ["1","3","9","7","9","/","1"]
+    // // split array into 2 arrays by regex
+    // let index = calculateParams.findIndex((element) => element.match(/[\+\-\*\/]/));
+    // let operator = calculateParams[index]
+    // let leftString = calculateParams.slice(0, index);
+    // let rightString = calculateParams.slice(index + 1);
+    // let secondNum = parseInt(rightString.join(''));
+    //
+    // console.log(leftString)
+    // console.log(operator)
+    // console.log(rightString)
+  }
+
+  calc(){
+    let calculateParams = ["1","3","9","7","9","+","1"]
+    // split array into 2 arrays by regex
+    let index = calculateParams.findIndex((element) => element.match(/[\+\-\*\/]/));
+    let operator = calculateParams[index]
+    let leftString = calculateParams.slice(0, index);
+    let rightString = calculateParams.slice(index + 1);
+
+    let firstNum = parseInt(leftString.join(''));
+    let secondNum = parseInt(rightString.join(''));
+    // console.log(firstNum)
+    // console.log(secondNum)
+    // console.log(operator)
+
+    switch (operator) {
+      case '+':
+        console.log(firstNum + secondNum)
+        break;
+      case '-':
+        console.log(firstNum - secondNum)
+        break;
+      case '*':
+        console.log(firstNum * secondNum)
+        break;
+      case '/':
+        console.log(firstNum / secondNum)
+        break;
+    }
+
+
+  }
+
 
   add() {
     this.store.dispatch(CalculatorActions.add({ firstNumber: this.firstNumber, secondNumber: this.secondNumber }));

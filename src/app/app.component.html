@@ -2,9 +2,10 @@
 <div>
   <input [(ngModel)]="firstNumber" placeholder="First Number" type="number">
   <input [(ngModel)]="secondNumber" placeholder="Second Number" type="number">
-  <button (click)="add()">Add</button>
-  <button (click)="subtract()">Subtract</button>
-  <button (click)="multiply()">Multiply</button>
-  <button (click)="divide()">Divide</button>
+  <button (click)="calc()">Calc</button>
+<!--  <button (click)="add()">Add</button>-->
+<!--  <button (click)="subtract()">Subtract</button>-->
+<!--  <button (click)="multiply()">Multiply</button>-->
+<!--  <button (click)="divide()">Divide</button>-->
   <p>Result: {{ (numBer$ | async)?.result }}</p>
 </div>
