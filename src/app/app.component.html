@@ -1,11 +1,30 @@
-<!-- src/app/app.component.html -->
-<div>
-  <input [(ngModel)]="firstNumber" placeholder="First Number" type="number">
-  <input [(ngModel)]="secondNumber" placeholder="Second Number" type="number">
-  <button (click)="calc()">Calc</button>
-<!--  <button (click)="add()">Add</button>-->
-<!--  <button (click)="subtract()">Subtract</button>-->
-<!--  <button (click)="multiply()">Multiply</button>-->
-<!--  <button (click)="divide()">Divide</button>-->
+<div class="calculator">
+  <div class="display">
+    <input [(ngModel)]="inputString" placeholder="0" type="text" class="input-field" readonly>
+  </div>
+  <div class="buttons">
+    <button (click)="appendToInput('7')">7</button>
+    <button (click)="appendToInput('8')">8</button>
+    <button (click)="appendToInput('9')">9</button>
+    <button (click)="appendToInput('/')">/</button>
+
+    <button (click)="appendToInput('4')">4</button>
+    <button (click)="appendToInput('5')">5</button>
+    <button (click)="appendToInput('6')">6</button>
+    <button (click)="appendToInput('*')">*</button>
+
+    <button (click)="appendToInput('1')">1</button>
+    <button (click)="appendToInput('2')">2</button>
+    <button (click)="appendToInput('3')">3</button>
+    <button (click)="appendToInput('-')">-</button>
+
+    <button (click)="appendToInput('0')">0</button>
+    <button (click)="appendToInput('.')">.</button>
+    <button (click)="clearInput()" style="background-color: red" >C</button>
+    <button (click)="appendToInput('+')">+</button>
+
+
+    <button (click)="calc()" class="calc-btn">=</button>
+  </div>
   <p>Result: {{ (numBer$ | async)?.result }}</p>
 </div>

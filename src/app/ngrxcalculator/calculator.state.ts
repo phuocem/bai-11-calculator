@@ -3,4 +3,5 @@ export interface CalculatorState {
   secondNumber: number;
   operator: string;
   result: number;
+  inputString?: string;
 }

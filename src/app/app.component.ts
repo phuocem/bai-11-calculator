@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CalculatorState } from './ngrxcalculator/calculator.state';
 import * as CalculatorActions from './ngrxcalculator/calculator.actions';
-import {AsyncPipe, JsonPipe} from "@angular/common";
-import {FormsModule} from "@angular/forms";
+import { AsyncPipe, JsonPipe } from "@angular/common";
+import { FormsModule } from "@angular/forms";
 
 @Component({
   selector: 'app-root',
@@ -17,76 +17,55 @@ import {FormsModule} from "@angular/forms";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'bai11-calculator';
-
-
-
-
-
-  firstNumber  = 0;
-  secondNumber= 0;
   numBer$ = this.store.select('calculator');
+  inputString = '';
 
   constructor(private store: Store<{ calculator: CalculatorState }>) {
-    // let calculateParams = ["1","3","9","7","9","/","1"]
-    // // split array into 2 arrays by regex
-    // let index = calculateParams.findIndex((element) => element.match(/[\+\-\*\/]/));
-    // let operator = calculateParams[index]
-    // let leftString = calculateParams.slice(0, index);
-    // let rightString = calculateParams.slice(index + 1);
-    // let secondNum = parseInt(rightString.join(''));
-    //
-    // console.log(leftString)
-    // console.log(operator)
-    // console.log(rightString)
+    this.store.select('calculator').subscribe(state => {
+      this.inputString = state.inputString || '';
+    });
   }
 
-  calc(){
-    let calculateParams = ["1","3","9","7","9","+","1"]
-    // split array into 2 arrays by regex
-    let index = calculateParams.findIndex((element) => element.match(/[\+\-\*\/]/));
-    let operator = calculateParams[index]
-    let leftString = calculateParams.slice(0, index);
-    let rightString = calculateParams.slice(index + 1);
+  appendToInput(value: string) {
+    this.store.dispatch(CalculatorActions.appendToInput({ value }));
+  }
 
-    let firstNum = parseInt(leftString.join(''));
-    let secondNum = parseInt(rightString.join(''));
-    // console.log(firstNum)
-    // console.log(secondNum)
-    // console.log(operator)
+  clearInput() {
+    this.store.dispatch(CalculatorActions.clearInput());
+  }
+
+  calc() {
+    const operatorMatch = this.inputString.match(/[\+\-\*\/]/);
+
+    if (!operatorMatch) {
+      console.error('No operator found in the input');
+      return;
+    }
+
+    const operator = operatorMatch[0];
+    const [leftString, rightString] = this.inputString.split(operator);
+
+    const firstNum = parseInt(leftString, 10);
+    const secondNum = parseInt(rightString, 10);
+
+    if (isNaN(firstNum) || isNaN(secondNum)) {
+      console.error('Invalid numbers in the input');
+      return;
+    }
 
     switch (operator) {
       case '+':
-        console.log(firstNum + secondNum)
+        this.store.dispatch(CalculatorActions.add({ firstNumber: firstNum, secondNumber: secondNum }));
         break;
       case '-':
-        console.log(firstNum - secondNum)
+        this.store.dispatch(CalculatorActions.subtract({ firstNumber: firstNum, secondNumber: secondNum }));
         break;
       case '*':
-        console.log(firstNum * secondNum)
+        this.store.dispatch(CalculatorActions.multiply({ firstNumber: firstNum, secondNumber: secondNum }));
         break;
       case '/':
-        console.log(firstNum / secondNum)
+        this.store.dispatch(CalculatorActions.divide({ firstNumber: firstNum, secondNumber: secondNum }));
         break;
     }
-
-
-  }
-
-
-  add() {
-    this.store.dispatch(CalculatorActions.add({ firstNumber: this.firstNumber, secondNumber: this.secondNumber }));
-  }
-
-  subtract() {
-    this.store.dispatch(CalculatorActions.subtract({ firstNumber: this.firstNumber, secondNumber: this.secondNumber }));
-  }
-
-  multiply() {
-    this.store.dispatch(CalculatorActions.multiply({ firstNumber: this.firstNumber, secondNumber: this.secondNumber }));
-  }
-
-  divide() {
-    this.store.dispatch(CalculatorActions.divide({ firstNumber: this.firstNumber, secondNumber: this.secondNumber }));
   }
 }
